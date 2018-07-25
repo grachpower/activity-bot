@@ -1,0 +1,1 @@
+docker build -t activitybotlatest -f bot.Dockerfile .
