@@ -1,6 +1,7 @@
 version: '3'
 services:
   bot:
+    restart: always
     image: activitybotlatest
     ports:
      - "5432:5432"
