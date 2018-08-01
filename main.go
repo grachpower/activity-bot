@@ -37,13 +37,21 @@ func main () {
 			// Может быть идентификатором как чата с пользователем
 			// (тогда он равен UserID) так и публичного чата/канала
 			ChatID := update.Message.Chat.ID
-
+		
 			// Текст сообщения
 			Text := update.Message.Text
 
-			isAvailable := isAvailableMessage(Text)
+			switch update.Message.Command() {
+			case "init": 
+				msg := tgbotapi.NewMessage(ChatID, "пошли нахуй")
+				bot.Send(msg)
+			default:
+				isAvailable := isAvailableMessage(Text)
 
-			if (isAvailable) {
+				if !isAvailable {
+					continue
+				}
+
 				fmt.Println("Text is available: " + strconv.FormatBool(isAvailable))
 				
 				log.Printf("[%s] %d %s", UserName, ChatID, Text)
@@ -52,6 +60,7 @@ func main () {
 				reply := createReply(Text)
 				// Созадаем сообщение
 				msg := tgbotapi.NewMessage(ChatID, reply)
+				msg.ReplyToMessageID = update.Message.MessageID
 				// и отправляем его
 				bot.Send(msg)
 			}
@@ -61,11 +70,11 @@ func main () {
 }
 
 func createReply(text string) string {
-	itemIndex := strings.Index(text, TYPE_PATTERN)
+	itemIndex := strings.Index(strings.ToLower(text), TYPE_PATTERN)
 
 	return "нет, " + text[itemIndex:len(text)]
 }
 
 func isAvailableMessage(text string) bool {
-	return strings.Contains(text, TYPE_PATTERN)
+	return strings.Contains(strings.ToLower(text), TYPE_PATTERN)
 }
