@@ -3,9 +3,14 @@ package main
 import (
 	"github.com/Syfaro/telegram-bot-api"
 	"log"
+	"strings"
+	"fmt"
+	"strconv"
 )
 
 const BOT_TOKEN = "646189272:AAEFTGLNqqVXZc_RKCtwC5gJ7XlQBJR7XLA"
+
+const TYPE_PATTERN = "ты "
 
 func main () {
 	bot, err := tgbotapi.NewBotAPI(BOT_TOKEN)
@@ -36,15 +41,31 @@ func main () {
 			// Текст сообщения
 			Text := update.Message.Text
 
-			log.Printf("[%s] %d %s", UserName, ChatID, Text)
+			isAvailable := isAvailableMessage(Text)
 
-			// Ответим пользователю его же сообщением
-			reply := Text
-			// Созадаем сообщение
-			msg := tgbotapi.NewMessage(ChatID, reply)
-			// и отправляем его
-			bot.Send(msg)
+			if (isAvailable) {
+				fmt.Println("Text is available: " + strconv.FormatBool(isAvailable))
+				
+				log.Printf("[%s] %d %s", UserName, ChatID, Text)
+
+				// Ответим пользователю его же сообщением
+				reply := createReply(Text)
+				// Созадаем сообщение
+				msg := tgbotapi.NewMessage(ChatID, reply)
+				// и отправляем его
+				bot.Send(msg)
+			}
 		}
 
 	}
+}
+
+func createReply(text string) string {
+	itemIndex := strings.Index(text, TYPE_PATTERN)
+
+	return "нет, " + text[itemIndex:len(text)]
+}
+
+func isAvailableMessage(text string) bool {
+	return strings.Contains(text, TYPE_PATTERN)
 }
