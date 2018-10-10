@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/Syfaro/telegram-bot-api"
 	"fmt"
 	"log"
 	"strconv"
 	"strings"
+
+	"github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 const BOT_TOKEN = "646189272:AAEFTGLNqqVXZc_RKCtwC5gJ7XlQBJR7XLA"
