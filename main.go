@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Syfaro/telegram-bot-api"
 	"fmt"
 	"log"
 	"strconv"
