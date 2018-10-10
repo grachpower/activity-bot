@@ -47,7 +47,7 @@ func main() {
 				msg := tgbotapi.NewMessage(ChatID, "пошли нахуй")
 				bot.Send(msg)
 			case "chatId":
-				msg := tgbotapi.newMessage(ChatId, "Chat id: "+ChatID)
+				msg := tgbotapi.NewMessage(ChatID, "Chat id: "+strconv.FormatInt(ChatID, 10))
 				bot.Send(msg)
 			default:
 				isAvailable := isAvailableMessage(Text)
