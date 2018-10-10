@@ -1,18 +1,17 @@
 package main
 
 import (
-	"github.com/Syfaro/telegram-bot-api"
-	"log"
-	"strings"
 	"fmt"
+	"log"
 	"strconv"
+	"strings"
 )
 
 const BOT_TOKEN = "646189272:AAEFTGLNqqVXZc_RKCtwC5gJ7XlQBJR7XLA"
 
 const TYPE_PATTERN = "ты "
 
-func main () {
+func main() {
 	bot, err := tgbotapi.NewBotAPI(BOT_TOKEN)
 	if err != nil {
 		log.Panic(err)
@@ -37,13 +36,16 @@ func main () {
 			// Может быть идентификатором как чата с пользователем
 			// (тогда он равен UserID) так и публичного чата/канала
 			ChatID := update.Message.Chat.ID
-		
+
 			// Текст сообщения
 			Text := update.Message.Text
 
 			switch update.Message.Command() {
-			case "init": 
+			case "init":
 				msg := tgbotapi.NewMessage(ChatID, "пошли нахуй")
+				bot.Send(msg)
+			case "chatId":
+				msg := tgbotapi.newMessage(ChatId, "Chat id: "+ChatID)
 				bot.Send(msg)
 			default:
 				isAvailable := isAvailableMessage(Text)
@@ -53,7 +55,7 @@ func main () {
 				}
 
 				fmt.Println("Text is available: " + strconv.FormatBool(isAvailable))
-				
+
 				log.Printf("[%s] %d %s", UserName, ChatID, Text)
 
 				// Ответим пользователю его же сообщением
